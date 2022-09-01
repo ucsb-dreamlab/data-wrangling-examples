@@ -1,2 +1,3 @@
 yelp_dataset/*.json
 yelp_dataset/*.pdf
+csv_export/*.csv
