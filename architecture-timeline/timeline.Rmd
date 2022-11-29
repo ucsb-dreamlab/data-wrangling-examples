@@ -1,0 +1,21 @@
+---
+title: "timeline"
+output: html_document
+date: "2022-11-29"
+---
+
+```{r message=FALSE, warning=FALSE, paged.print=FALSE}
+library("timevis")
+library("tidyverse")
+
+groups <- data.frame(
+  id = c("project","person"),
+  content=c("Projects","People"),
+  style=c("color: red;","color: blue;")
+)
+
+data <- read_csv("data.csv") %>%
+  mutate(group=str_replace_all(category, " ","_"))
+
+timevis(data, groups)
+```
