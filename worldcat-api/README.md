@@ -20,15 +20,19 @@ export OCLC_SECRET="...YOUR API Secret..."
 ## `brief-bibs.sh`
 
 This scripts uses the `brief-bibs` API to download book data based on criteria
-specified in the script. Run the script from the command line:
+specified in the script. The results are written to `data/brief-bibs.csv`. Run
+the script from the command line:
 
 ```sh
+# writes data to data/brief-bibs.csv
 $ bash brief-bibs.sh
 ```
 
-The query is configured through variables set in the script: 
+The scripts can be configured through variables defined in the file: 
 
 ```sh
+# brief-bibs.sh
+
 # search params for brief-bibs.
 # See: https://developer.api.oclc.org/wcv2#/Bibliographic%20Resources/search-brief-bibs
 q="kw:microfinance"
@@ -36,5 +40,14 @@ datePublished="1990-2010"
 inLanguage="eng"
 itemSubType="book-printbook"
 preferredLanguage="eng"
+
 ```
 
+## `holdings.sh`
+
+This script uses the output of `brief-bibs.sh` as input. For each line in
+`data/brief-bibs.csv`, `holdings.sh` fetches holding information for two sets of
+libraries: those within 100 miles of San Franciso and those in the country of
+France. The output of holdings.sh is the same as the input with the addition of two
+new columns (holdings for San Francisco and France, respectively). The output is 
+written to `data/holdings.csv`.
