@@ -34,7 +34,6 @@ get_holdings() {
         echo "error: no oclcNumber given"
         return -1
     fi
-    echo "getting holdings for $oclcNumber"
     holdSF=$(curl -s --get \
         --data-urlencode oclcNumber=$oclcNumber \
         --data-urlencode holdingsAllEditions=true \
@@ -64,7 +63,7 @@ fi
 while read -r line; do
     # just the OCLC number
     i=$(echo $line | awk -F, '{gsub(/"/, "", $1); print $1}')
-    
+    echo "getting holdings for $i"
     echo $line,$(get_holdings $i) >> $holdingList
 done < $bibList
 
