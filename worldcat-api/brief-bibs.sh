@@ -1,30 +1,62 @@
 #!/bin/env bash
 
-bibList="brief-bibs.csv"
-tmpJson="tmp.json"
+# search params for brief-bibs.
+# See: https://developer.api.oclc.org/wcv2#/Bibliographic%20Resources/search-brief-bibs
+q="kw:microfinance"
+datePublished="1990-2010"
+inLanguage="eng"
+itemSubType="book-printbook"
+preferredLanguage="eng"
 
+# API enddpoint
+endpoint="https://americas.discovery.api.oclc.org/worldcat/search/v2/brief-bibs"
 
-# request access new access token using our credentials
-auth_url="https://oauth.oclc.org/token"
-grant_type="grant_type=client_credentials&scope=wcapi"
-bearer=$(echo -n $OCLC_ID:$OCLC_Secret | base64)
-token=$(curl -s -X POST $auth_url -H "Authorization: Basic $bearer" -d "$grant_type" | jq -r ".access_token")
+# config output files
+bibList="data/brief-bibs.csv"
+tmpJson="data/tmp.json" # removed at the end of the script
 
-if [ -z $token ]; then
-    echo "Failed to get OCLC API token."
+# check curl is installed
+if ! command -v curl &> /dev/null;then
+    echo "command 'curl' not found"
     exit 1
 fi
 
-endpoint="https://americas.discovery.api.oclc.org/worldcat/search/v2/brief-bibs"
+# check jq is installed
+if ! command -v jq &> /dev/null;then
+    echo "command 'jq' not found"
+    exit 1
+fi
+
+# check API credentials
+if [ -a $OCLC_ID ]; then
+    echo 'set $OCLC_ID to your OCLC API ID'
+    exit 1
+fi
+
+if [ -a $OCLC_SECRET ]; then
+    echo 'set $OCLC_SECRET to your OCLC API Secret'
+    exit 1
+fi
+
+# request a new access token using our credentials
+auth_url="https://oauth.oclc.org/token"
+grant_type="grant_type=client_credentials&scope=wcapi"
+bearer=$(echo -n $OCLC_ID:$OCLC_SECRET | base64)
+token=$(curl -s -X POST $auth_url -H "Authorization: Basic $bearer" -d "$grant_type" | jq -r ".access_token")
+
+if [ $token = "null" ]; then
+    echo "Failed to get OCLC API token: $token"
+    exit 1
+fi
+
 
 echo "getting 50 records from offset=0 ..."
 curl -s --get \
-    --data-urlencode q="kw:microfinance" \
-    --data-urlencode datePublished=1990-2010 \
-    --data-urlencode inLanguage=eng \
-    --data-urlencode itemType=book \
-    --data-urlencode itemSubType=book-printbook \
-    --data-urlencode preferredLanguage=eng \
+    --data-urlencode q=$q \
+    --data-urlencode datePublished=$datePublished \
+    --data-urlencode inLanguage=$inLanguage \
+    --data-urlencode itemSubType=$itemSubType \
+    --data-urlencode preferredLanguage=$preferredLanguage \
     --data-urlencode orderBy=mostWidelyHeld \
     --data-urlencode limit=50 \
     $endpoint -H "accept: application/json" -H "Authorization: Bearer $token" > $tmpJson
@@ -34,17 +66,17 @@ jq -r '.briefRecords[] | [.oclcNumber, .title, .creator, .date, .language, .gene
 
 # loop over remaining records
 numRecs=$(jq '.numberOfRecords' $tmpJson)
+echo "downloading $numRecs records ..."
 i=51
 while [ $i -le $numRecs ]
 do
-    echo "getting 50 records from offset=$i ..."
+    echo "getting next 50 records from offset=$i ..."
     curl -s --get \
-        --data-urlencode q="kw:microfinance" \
-        --data-urlencode datePublished=1990-2010 \
-        --data-urlencode inLanguage=eng \
-        --data-urlencode itemType=book \
-        --data-urlencode itemSubType=book-printbook \
-        --data-urlencode preferredLanguage=eng \
+        --data-urlencode q=$q \
+        --data-urlencode datePublished=$datePublished \
+        --data-urlencode inLanguage=$inLanguage \
+        --data-urlencode itemSubType=$itemSubType \
+        --data-urlencode preferredLanguage=$preferredLanguage \
         --data-urlencode orderBy=mostWidelyHeld \
         --data-urlencode limit=50 \
         --data-urlencode offset=$i \
@@ -52,3 +84,6 @@ do
         | jq -r '.briefRecords[] | [.oclcNumber, .title, .creator, .date, .language, .generalFormat, .specificFormat ] | @csv' >> $bibList
   ((i=i+50))
 done
+
+rm $tmpJson
+echo "done: saved to $bibList"
