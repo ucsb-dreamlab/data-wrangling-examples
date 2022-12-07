@@ -2,14 +2,16 @@
 
 # search params for brief-bibs.
 # See: https://developer.api.oclc.org/wcv2#/Bibliographic%20Resources/search-brief-bibs
-q="kw:microfinance" # or microcredit
+q="kw:microfinance OR kw:microcredit" # or microcredit
 datePublished="1970-2022"
 inLanguage="eng"
 itemSubType="book-printbook"
 preferredLanguage="eng"
+orderBy="mostWidelyHeld"
 
 # API enddpoint
 endpoint="https://americas.discovery.api.oclc.org/worldcat/search/v2/brief-bibs"
+jqexpr='.briefRecords[] | [.oclcNumber, .title, .creator, .machineReadableDate, .language, .generalFormat, .specificFormat ] | @csv'
 
 # config output files
 bibList="data/brief-bibs.csv"
@@ -57,12 +59,12 @@ curl -s --get \
     --data-urlencode inLanguage=$inLanguage \
     --data-urlencode itemSubType=$itemSubType \
     --data-urlencode preferredLanguage=$preferredLanguage \
-    --data-urlencode orderBy=mostWidelyHeld \
+    --data-urlencode orderBy=$orderBy \
     --data-urlencode limit=50 \
     $endpoint -H "accept: application/json" -H "Authorization: Bearer $token" > $tmpJson
 
 # first 50 records
-jq -r '.briefRecords[] | [.oclcNumber, .title, .creator, .date, .language, .generalFormat, .specificFormat ] | @csv'  $tmpJson > $bibList
+jq -r "$jqexpr"  $tmpJson > $bibList
 
 # loop over remaining records
 numRecs=$(jq '.numberOfRecords' $tmpJson)
@@ -77,11 +79,11 @@ do
         --data-urlencode inLanguage=$inLanguage \
         --data-urlencode itemSubType=$itemSubType \
         --data-urlencode preferredLanguage=$preferredLanguage \
-        --data-urlencode orderBy=mostWidelyHeld \
+        --data-urlencode orderBy=$orderBy \
         --data-urlencode limit=50 \
         --data-urlencode offset=$i \
         $endpoint -H "accept: application/json" -H "Authorization: Bearer $token" \
-        | jq -r '.briefRecords[] | [.oclcNumber, .title, .creator, .date, .language, .generalFormat, .specificFormat ] | @csv' >> $bibList
+        | jq -r "$jqexpr" >> $bibList
   ((i=i+50))
 done
 
