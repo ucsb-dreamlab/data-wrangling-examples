@@ -2,8 +2,8 @@
 
 # search params for brief-bibs.
 # See: https://developer.api.oclc.org/wcv2#/Bibliographic%20Resources/search-brief-bibs
-q="kw:microfinance"
-datePublished="1990-2010"
+q="kw:microfinance" # or microcredit
+datePublished="1970-2022"
 inLanguage="eng"
 itemSubType="book-printbook"
 preferredLanguage="eng"
