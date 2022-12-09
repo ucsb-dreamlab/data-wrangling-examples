@@ -1,21 +1,38 @@
 #!/bin/env bash
 
-# search params for brief-bibs.
-# See: https://developer.api.oclc.org/wcv2#/Bibliographic%20Resources/search-brief-bibs
-q="kw:microfinance OR kw:microcredit" # or microcredit
-datePublished="1970-2022"
-inLanguage="eng"
-itemSubType="book-printbook"
-preferredLanguage="eng"
-orderBy="mostWidelyHeld"
+get_bibs() {
+    # Search bibs endpoint
+    # See: https://developer.api.oclc.org/wcv2#/Bibliographic%20Resources/search-bibs
+    endpoint="https://americas.discovery.api.oclc.org/worldcat/search/v2/bibs"
+    q="kw:microfinance OR kw:microcredit" # or microcredit
+    datePublished="1970-2022"
+    inLanguage="eng"
+    itemSubType="book-printbook"
+    preferredLanguage="eng"
+    orderBy="mostWidelyHeld"
 
-# API enddpoint
-endpoint="https://americas.discovery.api.oclc.org/worldcat/search/v2/bibs"
-jqexpr='.briefRecords[] | [.oclcNumber, .title, .creator, .machineReadableDate, .language, .generalFormat, .specificFormat ] | @csv'
+    # set offset
+    off=1
+    if [ -a $1 ]; then
+        off=$1
+    fi
+
+    curl -s --get \
+        --data-urlencode q=$q \
+        --data-urlencode datePublished=$datePublished \
+        --data-urlencode inLanguage=$inLanguage \
+        --data-urlencode itemSubType=$itemSubType \
+        --data-urlencode preferredLanguage=$preferredLanguage \
+        --data-urlencode orderBy=$orderBy \
+        --data-urlencode limit=50 \
+        --data-urlencode offset=$off \
+        $endpoint -H "accept: application/json" -H "Authorization: Bearer $token"
+}
+
+
 
 # config output files
 bibJsonDir="data/bibs"
-tmpJson="data/tmp.json" # removed at the end of the script
 
 # check curl is installed
 if ! command -v curl &> /dev/null;then
@@ -55,42 +72,31 @@ offset=1
 totalRecs=0
 response=""
 
-get_bibs() {
-    curl -s --get \
-        --data-urlencode q=$q \
-        --data-urlencode datePublished=$datePublished \
-        --data-urlencode inLanguage=$inLanguage \
-        --data-urlencode itemSubType=$itemSubType \
-        --data-urlencode preferredLanguage=$preferredLanguage \
-        --data-urlencode orderBy=$orderBy \
-        --data-urlencode limit=501 \
-        --data-urlencode offset=$offset \
-        $endpoint -H "accept: application/json" -H "Authorization: Bearer $token"
-}
-
 # first 50 records
-result=$(get_bibs)
+result=$(get_bibs $offset)
 
 if [ $? -gt 0 ]; then
     echo "exiting"
     exit 1
 fi
 
-numRecs=$(echo $result | jq '.numberOfRecords')
+totalRecs=$(echo $result | jq '.numberOfRecords')
 
-if [ $numRecs = "null" ]; then
+if [ $totalRecs = "null" ]; then
     echo $result
     exit 1
 fi
 
+resulSize=$($result | jq '.bibRecords | length')
 
-echo "downloading $numRecs records ..."
-i=51
-while [ $i -le $numRecs ]
-do
-    get_bibs
-    ((i=i+50))
-done
 
-rm $tmpJson
-echo "done"
+# echo "downloading $totalRecs records ..."
+# i=51
+# while [ $i -le $totalRecs ]
+# do
+#     get_bibs
+#     ((i=i+50))
+# done
+
+# rm $tmpJson
+# echo "done"
