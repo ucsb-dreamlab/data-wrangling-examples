@@ -1,6 +1,9 @@
 #!/bin/env bash
 
+# get a response with 50 bibs
 get_bibs() {
+    declare off="$1"
+
     # Search bibs endpoint
     # See: https://developer.api.oclc.org/wcv2#/Bibliographic%20Resources/search-bibs
     endpoint="https://americas.discovery.api.oclc.org/worldcat/search/v2/bibs"
@@ -12,21 +15,51 @@ get_bibs() {
     orderBy="mostWidelyHeld"
 
     # set offset
-    off=1
-    if [ -a $1 ]; then
-        off=$1
+    if [[ -z "$off" ]]; then
+        off="1"
     fi
 
     curl -s --get \
-        --data-urlencode q=$q \
-        --data-urlencode datePublished=$datePublished \
-        --data-urlencode inLanguage=$inLanguage \
-        --data-urlencode itemSubType=$itemSubType \
-        --data-urlencode preferredLanguage=$preferredLanguage \
-        --data-urlencode orderBy=$orderBy \
+        --data-urlencode q="$q" \
+        --data-urlencode datePublished="$datePublished" \
+        --data-urlencode inLanguage="$inLanguage" \
+        --data-urlencode itemSubType="$itemSubType" \
+        --data-urlencode preferredLanguage="$preferredLanguage" \
+        --data-urlencode orderBy="$orderBy" \
         --data-urlencode limit=50 \
-        --data-urlencode offset=$off \
+        --data-urlencode offset="$off" \
         $endpoint -H "accept: application/json" -H "Authorization: Bearer $token"
+}
+
+save_bibs() {
+    dir="$1"
+    result="$2"
+    resulSize=$(echo $result | jq '.bibRecords | length')
+     if [ $? -gt 0 ]; then
+            echo "exiting with error"
+            exit 1
+        fi
+    i=0
+    while [[ $i -lt $resulSize ]]; do
+        bib=$(echo $result | jq ".bibRecords[$i]")
+        if [ $? -gt 0 ]; then
+            echo "exiting with error"
+            exit 1
+        fi
+        id=$(echo $bib | jq -r ".identifier.oclcNumber")
+        if [ $? -gt 0 ]; then
+            echo "exiting with error"
+            exit 1
+        fi
+        # save output
+        file="$dir/$id.json"
+        if [[ -a $file ]]; then
+            echo "file already exists: $file"
+        else
+            echo $bib > "$file"
+        fi
+        ((i=i+1))
+    done
 }
 
 
@@ -47,12 +80,12 @@ if ! command -v jq &> /dev/null;then
 fi
 
 # check API credentials
-if [ -a $OCLC_ID ]; then
+if [[ -z "$OCLC_ID" ]]; then
     echo 'set $OCLC_ID to your OCLC API ID'
     exit 1
 fi
 
-if [ -a $OCLC_SECRET ]; then
+if [[ -z $OCLC_SECRET ]]; then
     echo 'set $OCLC_SECRET to your OCLC API Secret'
     exit 1
 fi
@@ -60,20 +93,17 @@ fi
 # request a new access token using our credentials
 auth_url="https://oauth.oclc.org/token"
 grant_type="grant_type=client_credentials&scope=wcapi"
-bearer=$(echo -n $OCLC_ID:$OCLC_SECRET | base64)
+bearer=$(echo -n "$OCLC_ID:$OCLC_SECRET" | base64)
 token=$(curl -s -X POST $auth_url -H "Authorization: Basic $bearer" -d "$grant_type" | jq -r ".access_token")
 
-if [ $token = "null" ]; then
+if [[ $token = "null" ]]; then
     echo "Failed to get OCLC API token: $token"
     exit 1
 fi
 
-offset=1
-totalRecs=0
-response=""
-
 # first 50 records
-result=$(get_bibs $offset)
+echo "getting first 50 records"
+result=$(get_bibs 1)
 
 if [ $? -gt 0 ]; then
     echo "exiting"
@@ -87,7 +117,18 @@ if [ $totalRecs = "null" ]; then
     exit 1
 fi
 
-resulSize=$($result | jq '.bibRecords | length')
+# save first 50 bibs
+save_bibs "$bibJsonDir" "$result"
+
+offset=51
+while [[ $offset -lt $totalRecs ]]; do 
+    echo "getting records $offset-$((($offset+50)))/$totalRecs"
+    result=$(get_bibs $offset)
+    save_bibs "$bibJsonDir" "$result"
+    ((offset=offset+50))
+done
+
+
 
 
 # echo "downloading $totalRecs records ..."
