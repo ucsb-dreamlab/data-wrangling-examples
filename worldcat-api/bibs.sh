@@ -1,5 +1,10 @@
 #!/bin/env bash
 
+# this script queries OCLC and saves records as individual json files.
+
+# config output files
+bibJsonDir="data/bibs"
+
 # get a response with 50 bibs
 get_bibs() {
     declare off="$1"
@@ -31,6 +36,7 @@ get_bibs() {
         $endpoint -H "accept: application/json" -H "Authorization: Bearer $token"
 }
 
+# save each bib record as its on json file
 save_bibs() {
     dir="$1"
     result="$2"
@@ -64,8 +70,7 @@ save_bibs() {
 
 
 
-# config output files
-bibJsonDir="data/bibs"
+
 
 # check curl is installed
 if ! command -v curl &> /dev/null;then
