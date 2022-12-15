@@ -3,11 +3,11 @@
 This example includes bash scripts that use `curl` and `jq` to download and process
 bibliographic data from OCLC's [WorldCat Search
 API](https://developer.api.oclc.org/wcv2). OCLC's API is not publicly
-accessible. To use these scripts, you will need an API key 
+accessible, so you will need an API key to use the scripts.
 
 ## Setup
 
-The bash scripts require `curl` and `jq`. These programs should be installed and
+The bash scripts use `curl` and `jq`. These programs should be installed and
 accessible on your PATH. In addition, you should set two environment variables
 with your OCLC API id and secret:
 
@@ -16,8 +16,11 @@ export OCLC_ID="...YOUR API ID..."
 export OCLC_SECRET="...YOUR API Secret..."
 ```
 
+## Usage
 
-## `bibs.sh`
+Scripts are describe below. They should be run in the order described.
+
+### `bibs.sh`
 
 This scripts uses OCLC's `search-bibs` API to download book data based on
 criteria specified in the script. The results are downloaded to `data/bib/` as
@@ -26,7 +29,7 @@ the command line:
 
 ```sh
 # writes data to data/brief-bibs.csv
-$ bash ßbibs.sh
+$ bash bibs.sh
 ```
 
 The scripts can be configured through variables defined in the file: 
@@ -44,18 +47,29 @@ preferredLanguage="eng"
 
 ```
 
-## `holdings.sh`
+### `holdings.sh`
 
-This script fetches holding information for each resource (json file) save in
-`data/bibs`. The output is written to `data/holdings.csv`. It includes two columns:
-an OCLC number and a holding count.
+This script fetches holding information for each resource (json file) in
+`data/bibs` (downloaded by `bibs.sh`) . The output is written to
+`data/holdings.csv`. It includes two columns: an OCLC number and a holding
+count.  Run the script from the command line:
 
-## `extract.sh`
+```sh
+# this will take a long time if you have a lot of json files in data/bibs
+$ bash holdings.sh
+```
+
+
+### `extract.sh`
 
 This script generates two csv files, `data/bibs.csv` and `data/authors.csv` from
 the json files in `data/bibs` and the csv, `data/holdings.csv`. 
 
-### `data/bibs.csv`
+```sh
+$ bash holdings.sh
+```
+
+#### `data/bibs.csv`
 
 Each row in the spreadsheet represents a unique OCLC resource with a unique
 “oclcNumber”. Additionally, for each record, there is a “holdings” count using
@@ -78,7 +92,7 @@ Columns:
 - physicalDescription: physical description of the book
 - Holdings: holdings count for the book, from holdings API
 
-### `data/authors.csv`
+#### `data/authors.csv`
 
 Each resource is repeated multiple times for each author. 
 
