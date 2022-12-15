@@ -22,8 +22,8 @@ Scripts are describe below. They should be run in the order described.
 
 ### `bibs.sh`
 
-This scripts uses OCLC's `search-bibs` API to download book data based on
-criteria specified in the script. The results are downloaded to `data/bib/` as
+This script uses OCLC's `search-bibs` API to download book data based on
+query parameters specified in the script. The results are downloaded to `data/bibs` as
 per-resource json files (e.g., `data/bibs/1001251007.json`). Run the script from
 the command line:
 
@@ -50,9 +50,9 @@ preferredLanguage="eng"
 ### `holdings.sh`
 
 This script fetches holding information for each resource (json file) in
-`data/bibs` (downloaded by `bibs.sh`) . The output is written to
+`data/bibs` (as downloaded by `bibs.sh`). The output is written to
 `data/holdings.csv`. It includes two columns: an OCLC number and a holding
-count.  Run the script from the command line:
+count. Run the script from the command line:
 
 ```sh
 # this will take a long time if you have a lot of json files in data/bibs
@@ -66,10 +66,10 @@ This script generates two csv files, `data/bibs.csv` and `data/authors.csv` from
 the json files in `data/bibs` and the csv, `data/holdings.csv`. 
 
 ```sh
-$ bash holdings.sh
+$ bash extract.sh
 ```
 
-#### `data/bibs.csv`
+#### `data/bibs.csv` description
 
 Each row in the spreadsheet represents a unique OCLC resource with a unique
 “oclcNumber”. Additionally, for each record, there is a “holdings” count using
@@ -92,7 +92,7 @@ Columns:
 - physicalDescription: physical description of the book
 - Holdings: holdings count for the book, from holdings API
 
-#### `data/authors.csv`
+#### `data/authors.csv` description
 
 Each resource is repeated multiple times for each author. 
 
