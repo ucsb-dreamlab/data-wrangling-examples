@@ -7,8 +7,8 @@ that the video has completed before advancing in the survey.
 
 1. Create a new Qualtrics survey with at least three block: for the pre-video
    questions, for the video, and for the post-video questions.
-2. In the middle block, add a "Text/Graphic" question and use the "Rich Content
-   Editor" to add the YouTube embed html. The `iframe`'s `id` attribute needs 
+2. In the middle block, add a "Text/Graphic" question and use the rich content
+   editor to add the YouTube embed html. The `iframe`'s `id` attribute needs 
    to be set and the `src` url should include `enablejsapi=1`.
 
 ```html
@@ -20,28 +20,28 @@ that the video has completed before advancing in the survey.
    and re-enables the button when the youtube video has finished playing.
 
 ```js
-Qualtrics.SurveyEngine.addOnReady(function(){
+Qualtrics.SurveyEngine.addOnReady(function() {
   var qual = this
   qual.disableNextButton();
-	
-	// Load the YouTube API script
+
+  // Load the YouTube API script
   var tag = document.createElement('script');
-	tag.src = 'https://www.youtube.com/iframe_api';
+  tag.src = 'https://www.youtube.com/iframe_api';
   var firstScriptTag = document.getElementsByTagName('script')[0];
-	firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-  
-	// add event listener to enable next button when
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+  // add event listener to enable next button when
   // the video ends
   window.onYouTubeIframeAPIReady = function() {
-	  new YT.Player('watchme', {
+    new YT.Player('watchme', {
       events: {
-		    'onStateChange': function(event) {
-			    if (event.data == YT.PlayerState.ENDED) {
-					  qual.enableNextButton();
-				  }
-			  }
-		  }
-	  });
+        'onStateChange': function(event) {
+          if (event.data == YT.PlayerState.ENDED) {
+            qual.enableNextButton();
+          }
+        }
+      }
+    });
   };
 });
-``
+```
