@@ -1,0 +1,408 @@
+{
+  "SurveyEntry": {
+    "SurveyID": "SV_74FvErbwi8o1WXI",
+    "SurveyName": "Demo Survey",
+    "SurveyDescription": null,
+    "SurveyOwnerID": "UR_bl2zZ6Jp3a0cyxg",
+    "SurveyBrandID": "ucsb",
+    "DivisionID": null,
+    "SurveyLanguage": "EN",
+    "SurveyActiveResponseSet": "RS_86cn0jddoicvcl8",
+    "SurveyStatus": "Inactive",
+    "SurveyStartDate": "0000-00-00 00:00:00",
+    "SurveyExpirationDate": "0000-00-00 00:00:00",
+    "SurveyCreationDate": "2024-01-18 10:20:47",
+    "CreatorID": "UR_bl2zZ6Jp3a0cyxg",
+    "LastModified": "2024-01-18 12:42:46",
+    "LastAccessed": "0000-00-00 00:00:00",
+    "LastActivated": "0000-00-00 00:00:00",
+    "Deleted": null
+  },
+  "SurveyElements": [
+    {
+      "SurveyID": "SV_74FvErbwi8o1WXI",
+      "Element": "BL",
+      "PrimaryAttribute": "Survey Blocks",
+      "SecondaryAttribute": null,
+      "TertiaryAttribute": null,
+      "Payload": [
+        {
+          "Type": "Default",
+          "Description": "first questions",
+          "ID": "BL_1YOW3TJqZmH3lAO",
+          "BlockElements": [
+            {
+              "Type": "Question",
+              "QuestionID": "QID1"
+            }
+          ],
+          "Options": {
+            "BlockLocking": "false",
+            "RandomizeQuestions": "false",
+            "BlockVisibility": "Expanded"
+          }
+        },
+        {
+          "Type": "Trash",
+          "Description": "Trash / Unused Questions",
+          "ID": "BL_cx6CBTV1FStdqDk",
+          "BlockElements": [
+            {
+              "Type": "Question",
+              "QuestionID": "QID2"
+            },
+            {
+              "Type": "Question",
+              "QuestionID": "QID3"
+            }
+          ]
+        },
+        {
+          "Type": "Standard",
+          "SubType": "",
+          "Description": "video",
+          "ID": "BL_a5x89mmklwWuLrw",
+          "BlockElements": [
+            {
+              "Type": "Question",
+              "QuestionID": "QID4"
+            }
+          ]
+        },
+        {
+          "Type": "Standard",
+          "SubType": "",
+          "Description": "last questions",
+          "ID": "BL_6y7PwJoY7lJo30q",
+          "BlockElements": [
+            {
+              "Type": "Question",
+              "QuestionID": "QID5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "SurveyID": "SV_74FvErbwi8o1WXI",
+      "Element": "FL",
+      "PrimaryAttribute": "Survey Flow",
+      "SecondaryAttribute": null,
+      "TertiaryAttribute": null,
+      "Payload": {
+        "Type": "Root",
+        "FlowID": "FL_1",
+        "Flow": [
+          {
+            "Type": "Block",
+            "ID": "BL_1YOW3TJqZmH3lAO",
+            "FlowID": "FL_2",
+            "Autofill": []
+          },
+          {
+            "Type": "Standard",
+            "ID": "BL_a5x89mmklwWuLrw",
+            "FlowID": "FL_3",
+            "Autofill": []
+          },
+          {
+            "Type": "Block",
+            "ID": "BL_6y7PwJoY7lJo30q",
+            "FlowID": "FL_13",
+            "Autofill": []
+          }
+        ],
+        "Properties": {
+          "Count": 13,
+          "RemovedFieldsets": []
+        }
+      }
+    },
+    {
+      "SurveyID": "SV_74FvErbwi8o1WXI",
+      "Element": "PL",
+      "PrimaryAttribute": "Preview Link",
+      "SecondaryAttribute": null,
+      "TertiaryAttribute": null,
+      "Payload": {
+        "PreviewType": "Brand",
+        "PreviewID": "6248c1ce-8700-4b04-9abb-06ed25a13ffa"
+      }
+    },
+    {
+      "SurveyID": "SV_74FvErbwi8o1WXI",
+      "Element": "SO",
+      "PrimaryAttribute": "Survey Options",
+      "SecondaryAttribute": null,
+      "TertiaryAttribute": null,
+      "Payload": {
+        "BackButton": "false",
+        "SaveAndContinue": "true",
+        "SurveyProtection": "PublicSurvey",
+        "BallotBoxStuffingPrevention": "false",
+        "NoIndex": "Yes",
+        "SecureResponseFiles": "true",
+        "SurveyExpiration": "None",
+        "SurveyTermination": "DefaultMessage",
+        "Header": "",
+        "Footer": "",
+        "ProgressBarDisplay": "None",
+        "PartialData": "+1 week",
+        "ValidationMessage": "",
+        "PreviousButton": "",
+        "NextButton": "",
+        "SurveyTitle": "Qualtrics Survey | Qualtrics Experience Management",
+        "SkinLibrary": "ucsb",
+        "SkinType": "templated",
+        "Skin": {
+          "brandingId": "9676661886",
+          "templateId": "*base",
+          "overrides": null
+        },
+        "NewScoring": 1,
+        "SurveyMetaDescription": "The most powerful, simple and trusted way to gather experience data. Start your journey to experience management and try a free account today."
+      }
+    },
+    {
+      "SurveyID": "SV_74FvErbwi8o1WXI",
+      "Element": "SCO",
+      "PrimaryAttribute": "Scoring",
+      "SecondaryAttribute": null,
+      "TertiaryAttribute": null,
+      "Payload": {
+        "ScoringCategories": [],
+        "ScoringCategoryGroups": [],
+        "ScoringSummaryCategory": null,
+        "ScoringSummaryAfterQuestions": 0,
+        "ScoringSummaryAfterSurvey": 0,
+        "DefaultScoringCategory": null,
+        "AutoScoringCategory": null
+      }
+    },
+    {
+      "SurveyID": "SV_74FvErbwi8o1WXI",
+      "Element": "PROJ",
+      "PrimaryAttribute": "CORE",
+      "SecondaryAttribute": null,
+      "TertiaryAttribute": "1.1.0",
+      "Payload": {
+        "ProjectCategory": "CORE",
+        "SchemaVersion": "1.1.0"
+      }
+    },
+    {
+      "SurveyID": "SV_74FvErbwi8o1WXI",
+      "Element": "STAT",
+      "PrimaryAttribute": "Survey Statistics",
+      "SecondaryAttribute": null,
+      "TertiaryAttribute": null,
+      "Payload": {
+        "MobileCompatible": true,
+        "ID": "Survey Statistics"
+      }
+    },
+    {
+      "SurveyID": "SV_74FvErbwi8o1WXI",
+      "Element": "QC",
+      "PrimaryAttribute": "Survey Question Count",
+      "SecondaryAttribute": "5",
+      "TertiaryAttribute": null,
+      "Payload": null
+    },
+    {
+      "SurveyID": "SV_74FvErbwi8o1WXI",
+      "Element": "SQ",
+      "PrimaryAttribute": "QID5",
+      "SecondaryAttribute": "A question about the video you just watched.",
+      "TertiaryAttribute": null,
+      "Payload": {
+        "QuestionText": "A question about the video you just watched.<br>",
+        "DefaultChoices": false,
+        "DataExportTag": "Q5",
+        "QuestionType": "MC",
+        "Selector": "SAVR",
+        "SubSelector": "TX",
+        "Configuration": {
+          "QuestionDescriptionOption": "UseText"
+        },
+        "QuestionDescription": "A question about the video you just watched.",
+        "Choices": {
+          "1": {
+            "Display": "Click to write Choice 1"
+          },
+          "2": {
+            "Display": "Click to write Choice 2"
+          },
+          "3": {
+            "Display": "Click to write Choice 3"
+          }
+        },
+        "ChoiceOrder": [
+          "1",
+          "2",
+          "3"
+        ],
+        "Validation": {
+          "Settings": {
+            "ForceResponse": "OFF",
+            "Type": "None"
+          }
+        },
+        "GradingData": [],
+        "Language": [],
+        "NextChoiceId": 4,
+        "NextAnswerId": 1,
+        "QuestionID": "QID5"
+      }
+    },
+    {
+      "SurveyID": "SV_74FvErbwi8o1WXI",
+      "Element": "SQ",
+      "PrimaryAttribute": "QID2",
+      "SecondaryAttribute": "Click to write the question text",
+      "TertiaryAttribute": null,
+      "Payload": {
+        "QuestionText": "Click to write the question text",
+        "DefaultChoices": false,
+        "DataExportTag": "Q2",
+        "QuestionType": "DB",
+        "Selector": "TB",
+        "Configuration": {
+          "QuestionDescriptionOption": "UseText"
+        },
+        "QuestionDescription": "Click to write the question text",
+        "ChoiceOrder": [],
+        "Validation": {
+          "Settings": {
+            "Type": "None"
+          }
+        },
+        "GradingData": [],
+        "Language": [],
+        "NextChoiceId": 4,
+        "NextAnswerId": 1,
+        "QuestionID": "QID2"
+      }
+    },
+    {
+      "SurveyID": "SV_74FvErbwi8o1WXI",
+      "Element": "SQ",
+      "PrimaryAttribute": "QID3",
+      "SecondaryAttribute": "Click to write the question text",
+      "TertiaryAttribute": null,
+      "Payload": {
+        "QuestionText": "Click to write the question text",
+        "DefaultChoices": false,
+        "DataExportTag": "Q3",
+        "QuestionType": "DB",
+        "Selector": "TB",
+        "Configuration": {
+          "QuestionDescriptionOption": "UseText"
+        },
+        "QuestionDescription": "Click to write the question text",
+        "ChoiceOrder": [],
+        "Validation": {
+          "Settings": {
+            "Type": "None"
+          }
+        },
+        "GradingData": [],
+        "Language": [],
+        "NextChoiceId": 4,
+        "NextAnswerId": 1,
+        "QuestionID": "QID3"
+      }
+    },
+    {
+      "SurveyID": "SV_74FvErbwi8o1WXI",
+      "Element": "RS",
+      "PrimaryAttribute": "RS_86cn0jddoicvcl8",
+      "SecondaryAttribute": "Default Response Set",
+      "TertiaryAttribute": null,
+      "Payload": null
+    },
+    {
+      "SurveyID": "SV_74FvErbwi8o1WXI",
+      "Element": "SQ",
+      "PrimaryAttribute": "QID4",
+      "SecondaryAttribute": "Please watch the video below. Click the next button when the video finishes.",
+      "TertiaryAttribute": null,
+      "Payload": {
+        "QuestionText": "<p>Please watch the video below. Click the next button when the video finishes.</p>\n<iframe width=\"560\" src=\"https://www.youtube.com/embed/U8DIKOxpftE?enablejsapi=1\" id=\"watchme\" height=\"315\"></iframe>",
+        "DefaultChoices": false,
+        "DataExportTag": "Q4",
+        "QuestionType": "DB",
+        "Selector": "GRB",
+        "Configuration": {
+          "QuestionDescriptionOption": "UseText"
+        },
+        "QuestionDescription": "Please watch the video below. Click the next button when the video finishes.",
+        "ChoiceOrder": [],
+        "Validation": {
+          "Settings": {
+            "Type": "None"
+          }
+        },
+        "GradingData": [],
+        "Language": [],
+        "NextChoiceId": 4,
+        "NextAnswerId": 1,
+        "QuestionID": "QID4",
+        "DataVisibility": {
+          "Private": false,
+          "Hidden": false
+        },
+        "SubSelector": "WTXB",
+        "QuestionJS": "Qualtrics.SurveyEngine.addOnReady(function(){\n  var qual = this\n  qual.disableNextButton();\n\t\n\t// Load the YouTube API script\n  var tag = document.createElement('script');\n\ttag.src = 'https://www.youtube.com/iframe_api';\n  var firstScriptTag = document.getElementsByTagName('script')[0];\n\tfirstScriptTag.parentNode.insertBefore(tag, firstScriptTag);\n  \n\t// add event listener to enable next button when\n  // the video ends\n  window.onYouTubeIframeAPIReady = function() {\n\t  new YT.Player('watchme', {\n      events: {\n\t\t    'onStateChange': function(event) {\n\t\t\t    if (event.data == YT.PlayerState.ENDED) {\n\t\t\t\t\t  qual.enableNextButton();\n\t\t\t\t  }\n\t\t\t  }\n\t\t  }\n\t  });\n  };\n});"
+      }
+    },
+    {
+      "SurveyID": "SV_74FvErbwi8o1WXI",
+      "Element": "SQ",
+      "PrimaryAttribute": "QID1",
+      "SecondaryAttribute": "some questions before we watch the video ...",
+      "TertiaryAttribute": null,
+      "Payload": {
+        "QuestionText": "some questions before we watch the video ...<br>",
+        "DataExportTag": "Q1",
+        "QuestionType": "MC",
+        "Selector": "SAVR",
+        "SubSelector": "TX",
+        "Configuration": {
+          "QuestionDescriptionOption": "UseText"
+        },
+        "QuestionDescription": "some questions before we watch the video ...",
+        "Choices": {
+          "1": {
+            "Display": "Click to write Choice 1"
+          },
+          "2": {
+            "Display": "Click to write Choice 2"
+          },
+          "3": {
+            "Display": "Click to write Choice 3"
+          }
+        },
+        "ChoiceOrder": [
+          "1",
+          "2",
+          "3"
+        ],
+        "Validation": {
+          "Settings": {
+            "ForceResponse": "OFF",
+            "Type": "None"
+          }
+        },
+        "Language": [],
+        "NextChoiceId": 4,
+        "NextAnswerId": 1,
+        "QuestionID": "QID1",
+        "DataVisibility": {
+          "Private": false,
+          "Hidden": false
+        }
+      }
+    }
+  ]
+}
