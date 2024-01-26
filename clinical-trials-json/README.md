@@ -9,7 +9,7 @@ The script requires two arguments: the input json file and the output csv file n
 
 ```sh
 python extract.py ctg-studies.json measures.csv
-``
+```
 
 The dataset was downloaded with this query: 
 
