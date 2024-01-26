@@ -59,13 +59,15 @@ def primary_outcome_measures(study):
 
 def all_measurements(outcome_measure):
     try:
-        for clas in outcome_measure['classes']:
-            for cat in clas['categories']:
-                for measure in cat['measurements']:
-                    yield measure
+        return [
+            measure for clas in outcome_measure.get('classes', [])
+            for cat in clas.get('categories', [])
+            for measure in cat.get('measurements', [])
+        ]
     except KeyError:
-        yield {}
-    
+        return []
+
+ 
 if __name__ == "__main__":
     """ This is executed when run from the command line """
     parser = argparse.ArgumentParser()
