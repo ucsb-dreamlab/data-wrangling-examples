@@ -39,7 +39,7 @@ def main(args: argparse.Namespace):
                         'briefTitle': title,
                         'unitOfMeasure': unit,
                         'comment': measure.get('comment',''),
-                        'groupId': measure.get('groupid', ''),
+                        'groupId': measure.get('groupId', ''),
                         'lowerLimit': measure.get('lowerLimit',''),
                         'upperLimit': measure.get('upperLimit',''),
                         'value': measure.get('value','')
