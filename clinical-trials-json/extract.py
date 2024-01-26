@@ -1,11 +1,10 @@
-
 #!/usr/bin/env python
 """
 Extract tabular data from clinical trials
 """
 
 __author__ = "DREAM Lab"
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 __license__ = "BSD-3"
 
 
@@ -15,70 +14,58 @@ import csv
 from os import path
 from typing import List, Any
 
+
 def main(args: argparse.Namespace):
     """ extract all measurements from pimary measure as csv """
     
-    with open(args.csv_out, 'w') as output:
-        # set csv output column names
-        csvOut = csv.DictWriter(output, fieldnames=[
-                                            'nctId',
-                                            'briefTitle',
-                                            'unitOfMeasure',
-                                            'comment',
-                                            'groupId',
-                                            'lowerLimit',
-                                            'upperLimit',
-                                            'value'
-                                        ])
-        csvOut.writeheader()
-        with open(args.json_in,'r') as input:
-            studies = json.load(input)
-            for study in studies:
-                id = nctId(study)
-                title = briefTitle(study)
-                for outcome in primaryOutcomeMeasures(study):
-                    unit = getVal(outcome, 'unitOfMeasure')
-                    for measure in allMeasurements(outcome):
-                        csvOut.writerow({
-                            'nctId':id,
-                            'briefTitle': title,
-                            'unitOfMeasure': unit,
-                            'comment': getVal(measure,'comment'),
-                            'groupId': getVal(measure,'groupId'),
-                            'lowerLimit': getVal(measure,'lowerLimit'),
-                            'upperLimit': getVal(measure,'upperLimit'),
-                            'value': getVal(measure,'value')
-                        }) 
+    # column names for output csv
+    fieldnames = [
+        'nctId', 'briefTitle', 'unitOfMeasure', 'comment', 
+        'groupId', 'lowerLimit', 'upperLimit', 'value'
+    ]
 
-def nctId(study) -> str:
+    with open(args.json_in,'r') as input, open(args.csv_out, 'w') as output:
+        csv_out = csv.DictWriter(output, fieldnames=fieldnames)
+        csv_out.writeheader()
+        trials = json.load(input)
+        for trial in trials:
+            id = nct_id(trial)
+            title = brief_title(trial)
+            for outcome in primary_outcome_measures(trial):
+                unit = outcome.get('unitOfMeasure','')
+                for measure in all_measurements(outcome):
+                    csv_out.writerow({
+                        'nctId':id,
+                        'briefTitle': title,
+                        'unitOfMeasure': unit,
+                        'comment': measure.get('comment',''),
+                        'groupId': measure.get('groupid', ''),
+                        'lowerLimit': measure.get('lowerLimit',''),
+                        'upperLimit': measure.get('upperLimit',''),
+                        'value': measure.get('value','')
+                    }) 
+
+def nct_id(study) -> str:
      return study['protocolSection']['identificationModule']['nctId']
 
-def briefTitle(study) -> str:
+def brief_title(study) -> str:
      return study['protocolSection']['identificationModule']['briefTitle']
 
-def primaryOutcomeMeasures(study):
-     for outcome in study['resultsSection']['outcomeMeasuresModule']['outcomeMeasures']:
-        if outcome['type'] == 'PRIMARY':
-            yield outcome
+def primary_outcome_measures(study):
+    return [
+        outcome for outcome in study['resultsSection']['outcomeMeasuresModule']['outcomeMeasures']
+        if outcome.get('type') == 'PRIMARY'
+    ]
 
-def allMeasurements(outcomeMeasure):
+def all_measurements(outcome_measure):
     try:
-        for clas in outcomeMeasure['classes']:
+        for clas in outcome_measure['classes']:
             for cat in clas['categories']:
                 for measure in cat['measurements']:
                     yield measure
     except KeyError:
         yield {}
-
-def getVal(val, key: str):
-    try:
-        return val[key]
-    except KeyError:
-        return ""
     
-
-
-
 if __name__ == "__main__":
     """ This is executed when run from the command line """
     parser = argparse.ArgumentParser()
